@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naz Yurttaş – Portfolyo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #c9717a;
+    --blush: #f2dada;
+    --cream: #faf6f2;
+    --dark: #2b1f24;
+    --muted: #8a737a;
+    --accent: #e8b4b8;
+    --white: #ffffff;
+    --border: #ecdcdc;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); overflow-x: hidden; }
+ 
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(250,246,242,0.9); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--dark); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-decoration: none; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--rose); }
+ 
+  #home {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr; align-items: center;
+    padding: 8rem 3rem 4rem; position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 60% 80% at 80% 50%, #f2dada55 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 10% 80%, #e8b4b822 0%, transparent 60%);
+  }
+  .hero-deco {
+    position: absolute; right: -60px; top: 50%; transform: translateY(-50%);
+    width: 520px; height: 520px; border-radius: 50%;
+    background: radial-gradient(circle, #e8b4b8 0%, #f2dada 50%, transparent 70%);
+    opacity: .35; z-index: 0;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-tag {
+    display: inline-block; font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--rose); font-weight: 500; padding: .35rem .9rem;
+    border: 1px solid var(--accent); border-radius: 100px; margin-bottom: 1.6rem;
+    animation: fadeUp .7s ease both;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300; line-height: 1.05; letter-spacing: -.01em;
+    animation: fadeUp .7s .1s ease both;
+  }
+  .hero-name em { font-style: italic; color: var(--rose); }
+  .hero-sub { margin-top: 1.4rem; font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 400px; animation: fadeUp .7s .2s ease both; }
+  .hero-ctas { display: flex; gap: 1rem; margin-top: 2.4rem; flex-wrap: wrap; animation: fadeUp .7s .3s ease both; }
+  .btn-primary { padding: .75rem 1.8rem; background: var(--rose); color: #fff; border: none; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: background .2s, transform .15s; }
+  .btn-primary:hover { background: #b5575f; transform: translateY(-1px); }
+  .btn-ghost { padding: .75rem 1.8rem; background: transparent; color: var(--dark); border: 1px solid var(--border); border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: border-color .2s, transform .15s; }
+  .btn-ghost:hover { border-color: var(--rose); color: var(--rose); transform: translateY(-1px); }
+ 
+  .hero-illustration { position: relative; z-index: 1; display: flex; justify-content: center; align-items: center; }
+  .hero-card { background: var(--white); border: 1px solid var(--border); border-radius: 24px; padding: 2.4rem 2rem; max-width: 300px; width: 100%; box-shadow: 0 20px 60px -10px rgba(201,113,122,.18); animation: fadeUp .8s .15s ease both; }
+  .hero-card-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--rose)); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: #fff; font-weight: 600; margin-bottom: 1.2rem; }
+  .hero-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; }
+  .hero-card p { font-size: .82rem; color: var(--muted); margin-top: .3rem; }
+  .hero-card-badges { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem; }
+  .badge { font-size: .7rem; padding: .28rem .7rem; background: var(--blush); color: var(--rose); border-radius: 100px; font-weight: 500; }
+  .hero-card-links { display: flex; gap: .8rem; margin-top: 1.4rem; }
+  .hero-card-links a { font-size: .75rem; color: var(--muted); text-decoration: none; padding: .3rem .8rem; border: 1px solid var(--border); border-radius: 100px; transition: all .2s; }
+  .hero-card-links a:hover { color: var(--rose); border-color: var(--rose); }
+ 
+  section { padding: 6rem 3rem; }
+  .section-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rose); font-weight: 500; margin-bottom: .8rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.15; }
+  .section-title em { font-style: italic; color: var(--rose); }
+  .divider { width: 40px; height: 2px; background: linear-gradient(90deg, var(--rose), var(--accent)); border-radius: 2px; margin: 1.2rem 0 2.5rem; }
+ 
+  #about { background: var(--white); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; max-width: 1100px; margin: 0 auto; }
+  .about-text p { font-size: .95rem; color: var(--muted); line-height: 1.85; margin-bottom: 1rem; }
+  .about-text p strong { color: var(--dark); font-weight: 500; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 2rem; }
+  .stat-card { background: var(--cream); border-radius: 16px; padding: 1.4rem; border: 1px solid var(--border); }
+  .stat-card .num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--rose); line-height: 1; }
+  .stat-card .lbl { font-size: .78rem; color: var(--muted); margin-top: .3rem; }
+  .edu-card { background: var(--cream); border-radius: 20px; padding: 1.8rem; border: 1px solid var(--border); margin-bottom: 1.2rem; position: relative; padding-left: 1.8rem; }
+  .edu-card::before { content: ''; position: absolute; left: 0; top: 1.8rem; bottom: 1.8rem; width: 3px; border-radius: 3px; background: linear-gradient(180deg, var(--rose), var(--accent)); }
+  .edu-card h4 { font-weight: 500; font-size: .95rem; }
+  .edu-card .school { font-size: .82rem; color: var(--rose); margin-top: .3rem; }
+  .edu-card .period { font-size: .78rem; color: var(--muted); margin-top: .2rem; }
+ 
+  /* Skills */
+  #skills { background: var(--cream); }
+  .skills-wrapper { max-width: 1100px; margin: 0 auto; }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .skill-group { background: var(--white); border-radius: 20px; padding: 1.8rem; border: 1px solid var(--border); }
+  .skill-group h4 { font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; color: var(--rose); margin-bottom: 1.2rem; font-weight: 500; }
+  .skill-list { list-style: none; display: flex; flex-direction: column; gap: .65rem; }
+  .skill-list li { display: flex; align-items: center; justify-content: space-between; font-size: .88rem; color: var(--dark); }
+  .skill-list li .skill-level-tag { font-size: .7rem; color: var(--rose); background: var(--blush); padding: .2rem .65rem; border-radius: 100px; white-space: nowrap; flex-shrink: 0; }
+ 
+  /* Projects */
+  #projects { background: var(--white); }
+  .projects-wrapper { max-width: 1100px; margin: 0 auto; }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.8rem; }
+  .project-card { background: var(--cream); border-radius: 24px; border: 1px solid var(--border); overflow: hidden; transition: transform .2s, box-shadow .2s; }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px -8px rgba(201,113,122,.18); }
+  .project-top { padding: 2rem 1.8rem 0; }
+  .project-icon { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, var(--rose), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+  .project-body { padding: 1.2rem 1.8rem 1.8rem; }
+  .project-body h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; }
+  .project-body p { font-size: .84rem; color: var(--muted); line-height: 1.7; margin-top: .5rem; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+  .project-tag { font-size: .68rem; padding: .25rem .65rem; border: 1px solid var(--border); border-radius: 100px; color: var(--muted); }
+  .project-link { display: inline-flex; align-items: center; gap: .4rem; font-size: .78rem; color: var(--rose); text-decoration: none; margin-top: 1.2rem; font-weight: 500; transition: gap .2s; }
+  .project-link:hover { gap: .7rem; }
+ 
+  #experience { background: var(--cream); }
+  .exp-wrapper { max-width: 800px; margin: 0 auto; }
+  .exp-item { display: grid; grid-template-columns: auto 1fr; gap: 0 2rem; margin-bottom: 2.5rem; }
+  .exp-dot-col { display: flex; flex-direction: column; align-items: center; }
+  .exp-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--rose); flex-shrink: 0; margin-top: .35rem; }
+  .exp-line { flex: 1; width: 2px; background: linear-gradient(180deg, var(--accent), transparent); margin-top: .4rem; min-height: 60px; }
+  .exp-content h3 { font-weight: 500; font-size: 1rem; }
+  .exp-content .company { color: var(--rose); font-size: .85rem; margin-top: .2rem; }
+  .exp-content .period { color: var(--muted); font-size: .78rem; margin-top: .15rem; margin-bottom: .9rem; }
+  .exp-content ul { list-style: none; }
+  .exp-content ul li { font-size: .85rem; color: var(--muted); line-height: 1.7; padding-left: 1rem; position: relative; margin-bottom: .4rem; }
+  .exp-content ul li::before { content: '–'; position: absolute; left: 0; color: var(--rose); }
+ 
+  #cv { background: var(--white); text-align: center; }
+  .cv-wrapper { max-width: 700px; margin: 0 auto; }
+  .cv-wrapper .divider { margin-left: auto; margin-right: auto; }
+  .cv-wrapper > p { font-size: .95rem; color: var(--muted); margin-bottom: 2.5rem; line-height: 1.7; }
+  .cv-btns { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+  .cv-btn { display: inline-flex; align-items: center; gap: .6rem; padding: 1rem 2rem; border-radius: 100px; text-decoration: none; font-size: .85rem; font-weight: 500; transition: all .2s; }
+  .cv-btn-en { background: var(--rose); color: #fff; }
+  .cv-btn-en:hover { background: #b5575f; transform: translateY(-2px); }
+  .cv-btn-tr { background: transparent; color: var(--dark); border: 1px solid var(--border); }
+  .cv-btn-tr:hover { border-color: var(--rose); color: var(--rose); transform: translateY(-2px); }
+ 
+  #contact { background: var(--cream); }
+  .contact-wrapper { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+  .contact-link { display: flex; align-items: center; gap: 1rem; padding: 1.2rem 1.5rem; background: var(--white); border: 1px solid var(--border); border-radius: 16px; text-decoration: none; color: var(--dark); transition: all .2s; }
+  .contact-link:hover { border-color: var(--rose); transform: translateX(4px); }
+  .contact-link-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--blush); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+  .contact-link-text { font-size: .85rem; font-weight: 500; }
+  .contact-link-sub { font-size: .75rem; color: var(--muted); margin-top: .15rem; }
+  .contact-note { background: var(--white); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; position: relative; overflow: hidden; }
+  .contact-note::before { content: '✦'; position: absolute; right: 1.5rem; top: 1rem; font-size: 3rem; color: var(--blush); line-height: 1; }
+  .contact-note p { font-size: .95rem; color: var(--muted); line-height: 1.8; }
+  .contact-note p strong { color: var(--dark); }
+ 
+  footer { background: var(--dark); color: rgba(255,255,255,.5); text-align: center; padding: 2rem; font-size: .78rem; letter-spacing: .05em; }
+  footer span { color: var(--rose); }
+ 
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+ 
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1rem; }
+    .nav-links a { font-size: .72rem; }
+    #home { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+    .hero-illustration { display: none; }
+    .hero-deco { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid, .contact-wrapper { grid-template-columns: 1fr; gap: 3rem; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    .skills-grid, .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+ 
+<nav>
+  <a class="nav-logo" href="#home">Naz Yurttaş</a>
+  <ul class="nav-links">
+    <li><a href="#about">Hakkımda</a></li>
+    <li><a href="#skills">Beceriler</a></li>
+    <li><a href="#projects">Projeler</a></li>
+    <li><a href="#experience">Deneyim</a></li>
+    <li><a href="#cv">CV</a></li>
+    <li><a href="#contact">İletişim</a></li>
+  </ul>
+</nav>
+ 
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-deco"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Bilgisayar Programcılığı Öğrencisi · İzmir, Türkiye</div>
+    <h1 class="hero-name">Merhaba, ben<br><em>Naz Yurttaş</em></h1>
+    <p class="hero-sub">İzmir Ekonomi Üniversitesi'nde Bilgisayar Programcılığı okuyan, yazılım geliştirme yolculuğuna merak ve azimle devam eden biriyim.</p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">Projelerimi Gör</a>
+      <a href="#contact" class="btn-ghost">İletişime Geç</a>
+    </div>
+  </div>
+  <div class="hero-illustration">
+    <div class="hero-card">
+      <div class="hero-card-avatar">NY</div>
+      <h3>Naz Yurttaş</h3>
+      <p>Bilgisayar Programcılığı Öğrencisi</p>
+      <div class="hero-card-badges">
+        <span class="badge">C#</span>
+        <span class="badge">Java</span>
+        <span class="badge">MySQL</span>
+        <span class="badge">HTML/CSS</span>
+        <span class="badge">GitHub</span>
+      </div>
+      <div class="hero-card-links">
+        <a href="https://github.com/nazyurttass" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/naz-yurtta%C5%9F-a91284372/" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <div class="section-label">Hakkımda</div>
+      <h2 class="section-title">Kendim<br>hakkında <em>biraz</em></h2>
+      <div class="divider"></div>
+      <p>Ben <strong>Naz Yurttaş</strong>. İzmir Ekonomi Üniversitesi'nde Bilgisayar Programcılığı okuyorum; <strong>1 yıllık İngilizce Hazırlık Programı</strong>'nı tamamladıktan sonra 2024'te bölüme başladım.</p>
+      <p>Hem derslerim hem de teknik stajım sayesinde gerçek dünya projelerinde deneyim kazandım. Yeni teknolojiler öğrenmekten ve bir geliştirici olarak sürekli büyümekten keyif alıyorum.</p>
+      <p>İlgi alanlarım; yazılım geliştirme, sistem yönetimi ve teknolojinin günlük hayattaki problemlere nasıl çözüm üretebileceğini keşfetmek üzerine yoğunlaşıyor.</p>
+      <div class="about-stats">
+        <div class="stat-card"><div class="num">3+</div><div class="lbl">Proje</div></div>
+        <div class="stat-card"><div class="num">1</div><div class="lbl">Staj</div></div>
+        <div class="stat-card"><div class="num">6+</div><div class="lbl">Teknik Beceri</div></div>
+        <div class="stat-card"><div class="num">3</div><div class="lbl">Sertifika</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Eğitim</div>
+      <h2 class="section-title"><em>Akademik</em><br>Geçmiş</h2>
+      <div class="divider"></div>
+      <div class="edu-card">
+        <h4>Bilgisayar Programcılığı</h4>
+        <div class="school">İzmir Ekonomi Üniversitesi</div>
+        <div class="period">2023 – Devam Ediyor · İzmir, Türkiye</div>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:.6rem;line-height:1.6;">1 yıllık İngilizce Hazırlık Programı tamamlandı. Yazılım geliştirme, veritabanı yönetimi ve sistem tasarımı odaklı eğitim devam ediyor.</p>
+      </div>
+      <div class="edu-card">
+        <h4>Sertifikalar & Kurslar</h4>
+        <div class="school">İzmir Ekonomi Üniversitesi Öğrenci Kulübü IUE MEDTECH</div>
+        <div class="period">Kasım 2025</div>
+        <p style="font-size:.82rem;color:var(--muted);margin-top:.6rem;line-height:1.6;">Python Pass Programı · Java Jam · İnovasyon Yönetimi & Çeviklik (Agile) Eğitimi</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="skills">
+  <div class="skills-wrapper">
+    <div class="section-label">Beceriler</div>
+    <h2 class="section-title">Teknik &amp; <em>Kişisel</em><br>Yetkinlikler</h2>
+    <div class="divider"></div>
+    <div class="skills-grid">
+ 
+      <div class="skill-group">
+        <h4>Programlama Dilleri</h4>
+        <ul class="skill-list">
+          <li><span>C#</span><span class="skill-level-tag">Basic</span></li>
+          <li><span>Java</span><span class="skill-level-tag">Basic</span></li>
+          <li><span>PHP</span><span class="skill-level-tag">Basic</span></li>
+          <li><span>HTML / CSS</span><span class="skill-level-tag">Intermediate</span></li>
+        </ul>
+      </div>
+ 
+      <div class="skill-group">
+        <h4>Araçlar & Platformlar</h4>
+        <ul class="skill-list">
+          <li><span>MySQL</span><span class="skill-level-tag">DB Ops</span></li>
+          <li><span>Visual Studio</span><span class="skill-level-tag">IDE</span></li>
+          <li><span>GitHub</span><span class="skill-level-tag">Basic</span></li>
+        </ul>
+      </div>
+ 
+      <div class="skill-group">
+        <h4>Yabancı Dil</h4>
+        <ul class="skill-list">
+          <li><span>Türkçe</span><span class="skill-level-tag">Anadil</span></li>
+          <li><span>İngilizce</span><span class="skill-level-tag">B1–B2</span></li>
+          <li><span>Almanca</span><span class="skill-level-tag">A1</span></li>
+        </ul>
+      </div>
+ 
+      <div class="skill-group">
+        <h4>Temel Yetkinlikler</h4>
+        <ul class="skill-list">
+          <li><span>Algoritma & Temel Programlama</span></li>
+          <li><span>Sistem Yönetimi</span></li>
+          <li><span>Teknik Destek</span></li>
+        </ul>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+ 
+<section id="projects">
+  <div class="projects-wrapper">
+    <div class="section-label">Projeler</div>
+    <h2 class="section-title">Geliştirdiğim <em>Projeler</em></h2>
+    <div class="divider"></div>
+    <div class="projects-grid">
+ 
+  
+      <div class="project-card">
+        <div class="project-top"><div class="project-icon">💪</div></div>
+        <div class="project-body">
+          <h3>Fitness Konsol Uygulaması</h3>
+          <p>Java ve MySQL ile geliştirilmiş konsol tabanlı bir spor salonu uygulaması. Kullanıcı kayıt/giriş, kalori hesaplama ve kişiye özel egzersiz önerisi sunar.</p>
+          <div class="project-tags">
+            <span class="project-tag">Java</span>
+            <span class="project-tag">MySQL</span>
+            <span class="project-tag">Konsol Uygulaması</span>
+          </div>
+          <a class="project-link" href="https://github.com/nazyurttass" target="_blank">GitHub'da İncele →</a>
+        </div>
+      </div>
+ 
+    
+      <div class="project-card">
+        <div class="project-top"><div class="project-icon">🌐</div></div>
+        <div class="project-body">
+          <h3>Web Sitesi</h3>
+          <p>C# ile geliştirilen backend ve HTML/CSS ile tasarlanan sayfa düzeniyle oluşturulmuş çok sayfalı bir web sitesi projesi.</p>
+          <div class="project-tags">
+            <span class="project-tag">C#</span>
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+          </div>
+          <a class="project-link" href="https://github.com/nazyurttass" target="_blank">GitHub'da İncele →</a>
+        </div>
+      </div>
+ 
+  
+      <div class="project-card">
+  <div class="project-top"><div class="project-icon">🏥</div></div>
+  <div class="project-body">
+    <h3>AI Mikro Sağlık Kocu</h3>
+    <p>Yapay zeka destekli full-stack bir sağlık asistanı web uygulaması. Kullanıcıya kişisel sağlık önerileri sunar.</p>
+    <div class="project-tags">
+      <span class="project-tag">Node.js</span>
+      <span class="project-tag">JavaScript</span>
+      <span class="project-tag">HTML/CSS</span>
+      <span class="project-tag">AI</span>
+    </div>
+    <a class="project-link" href="https://github.com/nazyurttass/AIsa-l-kKocu" target="_blank">GitHub'da İncele →</a>
+  </div>
+</div>
+
+
+         
+    </div>
+  </div>
+</section>
+ 
+<section id="experience" style="background:var(--white);">
+  <div class="exp-wrapper">
+    <div class="section-label">Deneyim</div>
+    <h2 class="section-title">Çalıştığım <em>Yerler</em></h2>
+    <div class="divider"></div>
+    <div class="exp-item">
+      <div class="exp-dot-col">
+        <div class="exp-dot"></div>
+        <div class="exp-line"></div>
+      </div>
+      <div class="exp-content">
+        <h3>Teknik Destek Stajyeri</h3>
+        <div class="company">Sisbim Teknoloji ve Yazılım A.Ş.</div>
+        <div class="period">10.06.2025 – 07.07.2025 · İzmir, Türkiye</div>
+        <ul>
+          <li>Uzaktan erişim sistemleri aracılığıyla kullanıcı desteği sağlandı.</li>
+          <li>İşletim sistemi kurulumu, yazılım dağıtımı ve yapılandırma işlemleri gerçekleştirildi.</li>
+          <li>Teknik arıza tanılama ve çözüm süreçlerine katkıda bulunuldu.</li>
+          <li>Kullanıcı desteği ve sistem yönetimi konularında uygulamalı deneyim kazanıldı.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<section id="cv">
+  <div class="cv-wrapper">
+    <div class="section-label" style="text-align:center;">CV İndir</div>
+    <h2 class="section-title" style="text-align:center;">Öz<em>geçmişim</em></h2>
+    <div class="divider"></div>
+    <p>CV'mi İngilizce veya Türkçe olarak indirebilirsiniz — her iki versiyonda da iletişim bilgilerim, yeteneklerim, projelerim ve deneyimlerim detaylı şekilde yer almaktadır.</p>
+    <div class="cv-btns">
+      <a href="Cv/Naz_Yurttas_CV_EN (1).pdf" class="cv-btn cv-btn-en" target="_blank">🇬🇧 English CV (PDF)</a>
+      <a href="Cv/Naz_Yurttas_Ozgecmis_TR (1).pdf" class="cv-btn cv-btn-tr" target="_blank">🇹🇷 Türkçe CV (PDF)</a>
+    </div>
+  </div>
+</section>
+ 
+<section id="contact">
+  <div class="contact-wrapper">
+    <div>
+      <div class="section-label">İletişim</div>
+      <h2 class="section-title"><em>Bağlantıya Geçelim</em></h2>
+      <div class="divider"></div>
+      <div class="contact-links">
+        <a class="contact-link" href="mailto:n_a_z_yurttas@hotmail.com">
+          <div class="contact-link-icon">✉️</div>
+          <div><div class="contact-link-text">n_a_z_yurttas@hotmail.com</div><div class="contact-link-sub">Send me an email</div></div>
+        </a>
+        <a class="contact-link" href="https://github.com/nazyurttass" target="_blank">
+          <div class="contact-link-icon">🐙</div>
+          <div><div class="contact-link-text">github.com/nazyurttass</div><div class="contact-link-sub">Check out my repositories</div></div>
+        </a>
+        <a class="contact-link" href="https://www.linkedin.com/in/naz-yurtta%C5%9F-a91284372/" target="_blank">
+          <div class="contact-link-icon">💼</div>
+          <div><div class="contact-link-text">Naz Yurttaş · LinkedIn</div><div class="contact-link-sub">Connect professionally</div></div>
+        </a>
+      </div>
+    </div>
+    <div class="contact-note">
+      <div class="section-label">Yeni fırsatlara açığım</div>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;margin-bottom:1rem;line-height:1.3;">Yeni Deneyimler Arıyorum</h3>
+      <p>Bilgisayar Programcılığı öğrencisiyim ve İzmir, Türkiye'de yaşıyorum. Yazılım geliştirme alanında kendimi geliştirebileceğim proje iş birlikleri, staj fırsatları ve junior pozisyonlar arıyorum. Birlikte çalışmak veya iletişime geçmek isterseniz bana ulaşabilirsiniz!</p>
+    </div>
+  </div>
+</section>
+ 
+<footer>
+  <p>© 2026 <span>Naz Yurttaş</span> · Bilgisayar Programcılığı öğrencisi · İzmir, Türkiye</p>
+</footer>
+ 
+</body>
+</html>
